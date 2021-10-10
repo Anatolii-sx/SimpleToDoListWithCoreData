@@ -61,7 +61,7 @@ class MainViewController: UITableViewController {
     @objc private func addNewTask() {
         showAlert()
     }
-    
+    // Сохранение введенного названия задачи. Вызов метода save у Storage Manager, который возвращает task в completion, данный task добавляем в массив и добавляем новую строку
     private func save(taskName: String) {
         StorageManager.shared.save(taskName) { task in
             self.tasks.append(task)
@@ -71,7 +71,7 @@ class MainViewController: UITableViewController {
             )
         }
     }
-
+    // Получение данных. В completion возвращается result с двумя case. В первом case возвращается массив tasks.
     private func fetchData() {
         StorageManager.shared.fetchData { result in
             switch result {
@@ -86,22 +86,28 @@ class MainViewController: UITableViewController {
 
 // MARK: - UITableViewDelegate
 extension MainViewController {
-    // Edit task
+    // Редактирование task
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Снятие выделения с ячейки при нажатии
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        // вызов alert controller для выбранной задачи и в блоке замыкания обновляем строку, которая обновиться после нажатия кнопки save в alert
         let task = tasks[indexPath.row]
         showAlert(task: task) {
             tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
     
-    // Delete task
+    // Удаление task
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let task = tasks[indexPath.row]
         
         if editingStyle == .delete {
+            // Удаление из массива
             tasks.remove(at: indexPath.row)
+            // Удаление строки из таблицы
             tableView.deleteRows(at: [indexPath], with: .automatic)
+            // Удаление из БД (вызов метода delete у StorageManager с передачей удаляемой task)
             StorageManager.shared.delete(task)
         }
     }
@@ -109,13 +115,20 @@ extension MainViewController {
 
 // MARK: - Alert Controller
 extension MainViewController {
+    
+    // Вызов alert с параметрами task и completion, которые по умолчанию принимают значения nil. Если nil (вызов без параметра) -> значит alert для новой задачи, если не nil (вызов с параметрами) -> значит alert для редактирования
     private func showAlert(task: Task? = nil, completion: (() -> Void)? = nil) {
         let title = task != nil ? "Update Task" : "New Task"
+        
+        // Создание экземпляра alert controller с передаваемым title
         let alert = UIAlertController.createAlertController(withTitle: title)
         
+        // Вызываем метод action из созданного экземпляра с передаваемым task. Блок замыкания возвращает новое название задачи с типом String
         alert.action(task: task) { taskName in
             if let task = task, let completion = completion {
                 StorageManager.shared.edit(task, newName: taskName)
+                
+                // Completion для того, чтобы задействовать indexPath, см. строка 97)
                 completion()
             } else {
                 self.save(taskName: taskName)

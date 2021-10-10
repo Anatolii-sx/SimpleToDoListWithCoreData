@@ -30,7 +30,7 @@ class StorageManager {
     }
     
     // MARK: - Public Methods
-    // Получение данных
+    // Получение данных (массива [Task])
     func fetchData(completion: (Result<[Task], Error>) -> Void) {
         let fetchRequest = Task.fetchRequest()
 
@@ -42,21 +42,24 @@ class StorageManager {
         }
     }
     
-    // Сохранение данных
+    // Сохранение данных. Сохраняемая новая задача и возвращаемое значение в completion для передачи в массив во вью
     func save(_ taskName: String, completion: (Task) -> Void) {
-        let task = Task(context: viewContext)
+        // Создание экземпляра модели данных из БД
+        guard let entityDescription = NSEntityDescription.entity(forEntityName: "Task", in: viewContext) else { return }
+        guard let task = NSManagedObject(entity: entityDescription, insertInto: viewContext) as? Task else { return }
+        
         task.title = taskName
         completion(task)
         saveContext()
     }
     
-    // Редактирование данных
+    // Редактирование данных (названи е текущей задачи и новое)
     func edit(_ task: Task, newName: String) {
         task.title = newName
         saveContext()
     }
 
-    // Удаление
+    // Удаление задачи из контекста и сохранение изменений в базе
     func delete(_ task: Task) {
         viewContext.delete(task)
         saveContext()
