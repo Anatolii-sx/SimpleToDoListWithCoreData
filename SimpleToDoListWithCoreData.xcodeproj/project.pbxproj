@@ -13,7 +13,8 @@
 		9C1073C02712DC3E00F15FFF /* SimpleToDoListWithCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9C1073BE2712DC3E00F15FFF /* SimpleToDoListWithCoreData.xcdatamodeld */; };
 		9C1073C22712DC3E00F15FFF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9C1073C12712DC3E00F15FFF /* Assets.xcassets */; };
 		9C1073C52712DC3E00F15FFF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C1073C32712DC3E00F15FFF /* LaunchScreen.storyboard */; };
-		9C1073CD2712E53000F15FFF /* TaskViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1073CC2712E53000F15FFF /* TaskViewController.swift */; };
+		9C5F2E0A27134B28009DA8D5 /* StorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5F2E0927134B28009DA8D5 /* StorageManager.swift */; };
+		9C5F2E0C27135115009DA8D5 /* AlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C5F2E0B27135115009DA8D5 /* AlertController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,7 +26,8 @@
 		9C1073C12712DC3E00F15FFF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9C1073C42712DC3E00F15FFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9C1073C62712DC3E00F15FFF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9C1073CC2712E53000F15FFF /* TaskViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskViewController.swift; sourceTree = "<group>"; };
+		9C5F2E0927134B28009DA8D5 /* StorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageManager.swift; sourceTree = "<group>"; };
+		9C5F2E0B27135115009DA8D5 /* AlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +63,8 @@
 				9C1073B52712DC3E00F15FFF /* AppDelegate.swift */,
 				9C1073B72712DC3E00F15FFF /* SceneDelegate.swift */,
 				9C1073B92712DC3E00F15FFF /* MainViewController.swift */,
-				9C1073CC2712E53000F15FFF /* TaskViewController.swift */,
+				9C5F2E0B27135115009DA8D5 /* AlertController.swift */,
+				9C5F2E0927134B28009DA8D5 /* StorageManager.swift */,
 				9C1073C12712DC3E00F15FFF /* Assets.xcassets */,
 				9C1073C32712DC3E00F15FFF /* LaunchScreen.storyboard */,
 				9C1073C62712DC3E00F15FFF /* Info.plist */,
@@ -142,7 +145,8 @@
 			files = (
 				9C1073BA2712DC3E00F15FFF /* MainViewController.swift in Sources */,
 				9C1073B62712DC3E00F15FFF /* AppDelegate.swift in Sources */,
-				9C1073CD2712E53000F15FFF /* TaskViewController.swift in Sources */,
+				9C5F2E0A27134B28009DA8D5 /* StorageManager.swift in Sources */,
+				9C5F2E0C27135115009DA8D5 /* AlertController.swift in Sources */,
 				9C1073C02712DC3E00F15FFF /* SimpleToDoListWithCoreData.xcdatamodeld in Sources */,
 				9C1073B82712DC3E00F15FFF /* SceneDelegate.swift in Sources */,
 			);

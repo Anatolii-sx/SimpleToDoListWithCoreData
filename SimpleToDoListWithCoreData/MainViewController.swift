@@ -7,25 +7,17 @@
 
 import UIKit
 
-protocol TaskViewControllerDelegate {
-    func getTask(task: String)
-}
-
 class MainViewController: UITableViewController {
     
     private let cellID = "task"
     
-    var tasks: [String] = []
-
+    private var tasks: [Task] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellID)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
+        setupNavigationBar()
+        fetchData()
     }
     
     // MARK: - UITableViewDataSource
@@ -37,7 +29,7 @@ class MainViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellID, for: indexPath)
         let task = tasks[indexPath.row]
         var content = cell.defaultContentConfiguration()
-        content.text = task
+        content.text = task.title
         cell.contentConfiguration = content
         return cell
     }
@@ -67,19 +59,71 @@ class MainViewController: UITableViewController {
     }
     
     @objc private func addNewTask() {
-        let taskVC = TaskViewController()
-        taskVC.delegate = self
-        present(taskVC, animated: true)
-        
-//        taskVC.modalPresentationStyle = .fullScreen
-//        navigationController?.pushViewController(taskVC, animated: true)
+        showAlert()
+    }
+    
+    private func save(taskName: String) {
+        StorageManager.shared.save(taskName) { task in
+            self.tasks.append(task)
+            self.tableView.insertRows(
+                at: [IndexPath(row: self.tasks.count - 1, section: 0)],
+                with: .automatic
+            )
+        }
+    }
+
+    private func fetchData() {
+        StorageManager.shared.fetchData { result in
+            switch result {
+            case .success(let tasks):
+                self.tasks = tasks
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }
 
-extension MainViewController: TaskViewControllerDelegate {
-    func getTask(task: String) {
-        tasks.append(task)
-        tableView.reloadData()
+// MARK: - UITableViewDelegate
+extension MainViewController {
+    // Edit task
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let task = tasks[indexPath.row]
+        showAlert(task: task) {
+            tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
+    // Delete task
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let task = tasks[indexPath.row]
+        
+        if editingStyle == .delete {
+            tasks.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            StorageManager.shared.delete(task)
+        }
     }
 }
+
+// MARK: - Alert Controller
+extension MainViewController {
+    private func showAlert(task: Task? = nil, completion: (() -> Void)? = nil) {
+        let title = task != nil ? "Update Task" : "New Task"
+        let alert = UIAlertController.createAlertController(withTitle: title)
+        
+        alert.action(task: task) { taskName in
+            if let task = task, let completion = completion {
+                StorageManager.shared.edit(task, newName: taskName)
+                completion()
+            } else {
+                self.save(taskName: taskName)
+            }
+        }
+        
+        present(alert, animated: true)
+    }
+}
+
 
