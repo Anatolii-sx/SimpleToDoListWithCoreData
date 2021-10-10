@@ -53,7 +53,7 @@ class StorageManager {
         saveContext()
     }
     
-    // Редактирование данных (названи е текущей задачи и новое)
+    // Редактирование данных (название текущей задачи и новое)
     func edit(_ task: Task, newName: String) {
         task.title = newName
         saveContext()

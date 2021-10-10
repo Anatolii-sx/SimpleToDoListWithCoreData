@@ -13,7 +13,6 @@ extension UIAlertController {
         UIAlertController(title: title, message: "What do you want to do?", preferredStyle: .alert)
     }
     
-    //
     func action(task: Task?, completion: @escaping (String) -> Void) {
         
         // Создаем кнопку Save. При нажатии проверяем есть ли значение в TF и не пусто ли и возвращаем введенное значение в completion.
